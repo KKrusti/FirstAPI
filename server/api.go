@@ -1,7 +1,7 @@
 package server
 
 import (
-	gopher "apirest"
+	gopher "apirest/model"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"

@@ -1,4 +1,4 @@
-package gopher
+package model
 
 type Gopher struct {
 	ID   string `json:"ID"`
