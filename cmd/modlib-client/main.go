@@ -1,12 +1,12 @@
 package main
 
 import (
-	"apirest/server"
+	"apirest/cmd/modlib-server"
 	"log"
 	"net/http"
 )
 
 func main() {
-	s := server.New()
+	s := modlib_server.New()
 	log.Fatal(http.ListenAndServe(":8080", s.Router()))
 }
