@@ -1,6 +1,7 @@
 package modlib_server
 
 import (
+	"apirest/model"
 	"apirest/pkg/services/warriorService"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -23,6 +24,7 @@ func New() Server {
 	r.HandleFunc("/warriors", a.getWarriors).Methods(http.MethodGet)
 	r.HandleFunc("/warrior", a.getWarriorById).Methods(http.MethodGet)
 	r.HandleFunc("/warriorsByRace", a.getWarriorsByRace).Methods(http.MethodGet)
+	r.HandleFunc("/warrior", a.warrior).Methods(http.MethodPost)
 	a.router = r
 	return a
 }
@@ -52,4 +54,15 @@ func (a *api) getWarriorsByRace(writer http.ResponseWriter, request *http.Reques
 
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(warriors)
+}
+
+func (a *api) warrior(writer http.ResponseWriter, request *http.Request) {
+	var warrior model.Warrior
+	err := json.NewDecoder(request.Body).Decode(&warrior)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	a.warriorSrv.AddWarrior(warrior)
+	writer.WriteHeader(http.StatusCreated)
 }

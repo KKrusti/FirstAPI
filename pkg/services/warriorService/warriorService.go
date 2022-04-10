@@ -5,7 +5,7 @@ import (
 )
 
 type WarriorService struct {
-	warriors []model.Warrior
+	warriors *[]model.Warrior
 }
 
 func NewWarriorService() WarriorService {
@@ -15,11 +15,11 @@ func NewWarriorService() WarriorService {
 		{ID: "3", Name: "Krilin", Race: "Human", Gender: "Male", Power: 1000, Origin: "Earth"},
 		{ID: "4", Name: "A18", Race: "Android", Gender: "Female", Power: 35000, Origin: "Earth"}}
 
-	return WarriorService{warriors: warriors}
+	return WarriorService{warriors: &warriors}
 }
 
 func (srv WarriorService) FindById(id string) model.Warrior {
-	for _, value := range srv.warriors {
+	for _, value := range *srv.warriors {
 		if value.ID == id {
 			return value
 		}
@@ -28,12 +28,12 @@ func (srv WarriorService) FindById(id string) model.Warrior {
 }
 
 func (srv WarriorService) FindAll() []model.Warrior {
-	return srv.warriors
+	return *srv.warriors
 }
 
 func (srv WarriorService) FindByRace(race string) []model.Warrior {
 	found := make([]model.Warrior, 0)
-	for _, value := range srv.warriors {
+	for _, value := range *srv.warriors {
 		if value.Race == race {
 			found = append(found, value)
 		}
@@ -41,6 +41,6 @@ func (srv WarriorService) FindByRace(race string) []model.Warrior {
 	return found
 }
 
-func (srv WarriorService) SetWarriors(warriors []model.Warrior) {
-	srv.warriors = warriors
+func (srv WarriorService) AddWarrior(warrior model.Warrior) {
+	*srv.warriors = append(*srv.warriors, warrior)
 }
