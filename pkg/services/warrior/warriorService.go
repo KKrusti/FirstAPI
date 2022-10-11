@@ -5,15 +5,15 @@ import (
 	"errors"
 )
 
-type WarriorService struct {
+type Service struct {
 	warriors *[]model.Warrior
 }
 
-func New() WarriorService {
-	return WarriorService{warriors: &[]model.Warrior{}}
+func New() Service {
+	return Service{warriors: &[]model.Warrior{}}
 }
 
-func (srv WarriorService) CreateOne(id, name string, race model.Race, gender model.Gender, power int, origin string) *model.Warrior {
+func (srv Service) CreateOne(id, name string, race model.Race, gender model.Gender, power int, origin string) *model.Warrior {
 	warrior := model.Warrior{
 		ID:     id,
 		Name:   name,
@@ -26,7 +26,7 @@ func (srv WarriorService) CreateOne(id, name string, race model.Race, gender mod
 	return &warrior
 }
 
-func (srv WarriorService) GetAll() ([]model.Warrior, error) {
+func (srv Service) GetAll() ([]model.Warrior, error) {
 	if len(*srv.warriors) > 0 {
 		return *srv.warriors, nil
 	} else {
@@ -34,7 +34,7 @@ func (srv WarriorService) GetAll() ([]model.Warrior, error) {
 	}
 }
 
-func (srv WarriorService) AddSome(warriors []model.Warrior) int {
+func (srv Service) AddSome(warriors []model.Warrior) int {
 	for _, warrior := range warriors {
 		*srv.warriors = append(*srv.warriors, warrior)
 	}
@@ -42,11 +42,11 @@ func (srv WarriorService) AddSome(warriors []model.Warrior) int {
 	return len(warriors)
 }
 
-func (srv WarriorService) Add(warrior model.Warrior) {
+func (srv Service) Add(warrior model.Warrior) {
 	*srv.warriors = append(*srv.warriors, warrior)
 }
 
-func (srv WarriorService) FindByRace(raceString string) []model.Warrior {
+func (srv Service) FindByRace(raceString string) []model.Warrior {
 	var foundWarriors []model.Warrior
 	race, err := model.ParseRace(raceString)
 	if err != nil {
@@ -61,7 +61,7 @@ func (srv WarriorService) FindByRace(raceString string) []model.Warrior {
 	return foundWarriors
 }
 
-func (srv WarriorService) FindById(id string) model.Warrior {
+func (srv Service) FindById(id string) model.Warrior {
 	for _, warrior := range *srv.warriors {
 		if warrior.ID == id {
 			return warrior

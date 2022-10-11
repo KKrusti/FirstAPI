@@ -30,7 +30,7 @@ func Test_getAll_after_filling(t *testing.T) {
 	assert.Equal(t, 4, len(warriors))
 }
 
-func populateDb(srv WarriorService) int {
+func populateDb(srv Service) int {
 	warriors := []model.Warrior{
 		{ID: "1", Name: "Goku", Race: model.Saiyan, Gender: model.Male, Power: 50000, Origin: "Earth"},
 		{ID: "2", Name: "Vegeta", Race: model.Saiyan, Gender: model.Male, Power: 45000, Origin: "Planet Vegeta"},

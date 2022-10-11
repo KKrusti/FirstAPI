@@ -10,7 +10,7 @@ import (
 
 type api struct {
 	router     http.Handler
-	warriorSrv warrior.WarriorService
+	warriorSrv warrior.Service
 }
 
 type Server interface {
