@@ -10,8 +10,10 @@ import (
 func Test_create_warrior(t *testing.T) {
 	srv := New()
 	assert.Equal(t, 0, len(*srv.warriors))
-	_ = srv.CreateOne("1", "Son Goku", model.Saiyan, model.Male, 50000, "Planet Vegeta")
-	assert.Equal(t, 1, len(*srv.warriors))
+	_ = srv.CreateOne("1", "Son Goku", model.Saiyan, model.Male, 50000, "Earth")
+	warriors, err := srv.GetAll()
+	require.NoError(t, err)
+	assert.Equal(t, 1, len(warriors))
 }
 
 func Test_getAll_with_no_warriors(t *testing.T) {

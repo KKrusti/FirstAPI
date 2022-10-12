@@ -2,14 +2,14 @@ package model
 
 import "errors"
 
-type Race int
+type Race string
 
 const (
-	Unknown Race = iota
-	Human
-	Namekian
-	Saiyan
-	Android
+	Unknown  Race = "Unknown"
+	Human    Race = "Human"
+	Namekian Race = "Namekian"
+	Saiyan   Race = "Saiyan"
+	Android  Race = "Android"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 
 func ParseRace(s string) (race Race, err error) {
 	r := racesMap[s]
-	if r == 0 {
+	if r == "" {
 		return Unknown, errors.New("race not found")
 	}
 
