@@ -60,7 +60,7 @@ func New() MemDbService {
 	return MemDbService{db: db}
 }
 
-func (srv MemDbService) InsertWarrior(warrior *model.Warrior) (*model.Warrior, error) {
+func (srv MemDbService) Insert(warrior *model.Warrior) (*model.Warrior, error) {
 	tx := srv.db.Txn(true)
 	if err := tx.Insert("warrior", warrior); err != nil {
 		return &model.Warrior{}, errors.New("occurred while inserting warrior")
@@ -69,7 +69,7 @@ func (srv MemDbService) InsertWarrior(warrior *model.Warrior) (*model.Warrior, e
 	return warrior, nil
 }
 
-func (srv MemDbService) GetAllWarriors() ([]*model.Warrior, error) {
+func (srv MemDbService) GetAll() ([]*model.Warrior, error) {
 	var warriors []*model.Warrior
 	tx := srv.db.Txn(false)
 	it, err := tx.Get("warrior", "id")
@@ -81,4 +81,28 @@ func (srv MemDbService) GetAllWarriors() ([]*model.Warrior, error) {
 		warriors = append(warriors, w)
 	}
 	return warriors, nil
+}
+
+func (srv MemDbService) FindByRace(race model.Race) []*model.Warrior {
+	var warriors []*model.Warrior
+	tx := srv.db.Txn(false)
+	it, err := tx.Get("warrior", "race", string(race))
+	if err != nil {
+		return warriors
+	}
+	for obj := it.Next(); obj != nil; obj = it.Next() {
+		w := obj.(*model.Warrior)
+		warriors = append(warriors, w)
+	}
+	return warriors
+}
+
+func (srv MemDbService) FindById(id string) *model.Warrior {
+	tx := srv.db.Txn(false)
+	war, err := tx.First("warrior", "id", id)
+	if err != nil {
+		return nil
+	}
+	warrior := war.(*model.Warrior)
+	return warrior
 }

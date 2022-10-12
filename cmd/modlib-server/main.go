@@ -2,6 +2,7 @@ package modlib_server
 
 import (
 	"apirest/model"
+	"apirest/pkg/services/db"
 	"apirest/pkg/services/warrior"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -10,7 +11,7 @@ import (
 
 type api struct {
 	router     http.Handler
-	warriorSrv warrior.Service
+	warriorSrv warrior.ServiceInterface
 }
 
 type Server interface {
@@ -18,7 +19,8 @@ type Server interface {
 }
 
 func New() Server {
-	a := &api{warriorSrv: warrior.New()}
+	repository := db.New()
+	a := &api{warriorSrv: warrior.New(repository)}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/warriors", a.getWarriors).Methods(http.MethodGet)
